@@ -1,0 +1,78 @@
+<div class="list-page">
+  <p-toast />
+
+  <div class="page-header">
+    <div class="header-left">
+      <div class="header-icon">
+        <i class="pi pi-shopping-cart"></i>
+      </div>
+      <div class="header-text">
+        <h1>Ventas</h1>
+        <p>{{ isAdmin ? 'Historial de todas las ventas' : 'Historial de tus ventas' }} · {{ sales.length }} registradas</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <p-table
+      [value]="sales"
+      [loading]="loading"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      styleClass="p-datatable-sm"
+      [tableStyle]="{ 'min-width': '48rem' }"
+      [rowHover]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="codigo" style="width: 220px">
+            Código <p-sortIcon field="codigo" />
+          </th>
+          <th pSortableColumn="fechaCreacion" style="width: 170px">
+            Fecha <p-sortIcon field="fechaCreacion" />
+          </th>
+          @if (isAdmin) {
+            <th pSortableColumn="vendedorNombre">
+              Vendedor <p-sortIcon field="vendedorNombre" />
+            </th>
+          }
+          <th>Productos</th>
+          <th pSortableColumn="total" style="width: 150px">
+            Total <p-sortIcon field="total" />
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-sale>
+        <tr>
+          <td><span class="id-badge">{{ sale.codigo }}</span></td>
+          <td>{{ sale.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
+          @if (isAdmin) {
+            <td>{{ sale.vendedorNombre }}</td>
+          }
+          <td>
+            @for (item of sale.items; track item.productoId) {
+              <div class="sale-item">
+                {{ item.productoNombre }} × {{ item.cantidad }}
+                <span>{{ item.precioUnitario | currency:'USD' }} c/u</span>
+              </div>
+            }
+          </td>
+          <td><span class="price-value">{{ sale.total | currency:'USD' }}</span></td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td [attr.colspan]="isAdmin ? 5 : 4">
+            <div class="empty-state">
+              <i class="pi pi-inbox"></i>
+              <span>No hay ventas registradas</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

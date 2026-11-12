@@ -1,0 +1,109 @@
+<div class="list-page">
+  <p-toast />
+  <p-confirmDialog />
+
+  <div class="page-header">
+    <div class="header-left">
+      <div class="header-icon">
+        <i class="pi pi-users"></i>
+      </div>
+      <div class="header-text">
+        <h1>Usuarios</h1>
+        <p>{{ users.length }} usuario{{ users.length !== 1 ? 's' : '' }} registrado{{ users.length !== 1 ? 's' : '' }}</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <p-button
+        label="Nuevo Usuario"
+        icon="pi pi-plus"
+        styleClass="new-btn"
+        (onClick)="goToCreate()"
+      />
+    </div>
+  </div>
+
+  <div class="table-card">
+    <p-table
+      [value]="users"
+      [loading]="loading"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      styleClass="p-datatable-sm"
+      [tableStyle]="{ 'min-width': '48rem' }"
+      [rowHover]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="username">
+            Usuario <p-sortIcon field="username" />
+          </th>
+          <th pSortableColumn="nombreCompleto">
+            Nombre <p-sortIcon field="nombreCompleto" />
+          </th>
+          <th pSortableColumn="email">
+            Email <p-sortIcon field="email" />
+          </th>
+          <th pSortableColumn="rol" style="width: 120px">
+            Rol <p-sortIcon field="rol" />
+          </th>
+          <th style="width: 120px">Estado</th>
+          <th style="width: 120px; text-align: center">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>
+            <div class="product-name">
+              <i class="pi pi-user"></i>
+              {{ user.username }}
+            </div>
+          </td>
+          <td>{{ user.nombreCompleto }}</td>
+          <td>{{ user.email }}</td>
+          <td><span class="id-badge">{{ user.rol }}</span></td>
+          <td>
+            <p-tag
+              [value]="user.activo ? 'Activo' : 'Inactivo'"
+              [severity]="user.activo ? 'success' : 'danger'"
+            />
+          </td>
+          <td>
+            <div class="action-buttons">
+              <p-button
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [text]="true"
+                severity="info"
+                pTooltip="Editar"
+                (onClick)="goToEdit(user.id)"
+              />
+              @if (user.username !== currentUsername) {
+                <p-button
+                  [icon]="user.activo ? 'pi pi-ban' : 'pi pi-check-circle'"
+                  [rounded]="true"
+                  [text]="true"
+                  [severity]="user.activo ? 'danger' : 'info'"
+                  [pTooltip]="user.activo ? 'Desactivar' : 'Activar'"
+                  (onClick)="confirmToggle(user)"
+                />
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">
+            <div class="empty-state">
+              <i class="pi pi-inbox"></i>
+              <span>No hay usuarios registrados</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

@@ -1,0 +1,130 @@
+<div class="form-page">
+  <p-toast />
+
+  <div class="form-header">
+    <p-button
+      icon="pi pi-arrow-left"
+      [text]="true"
+      severity="secondary"
+      (onClick)="goBack()"
+      styleClass="back-btn"
+    />
+    <div class="header-text">
+      <h1>{{ isEdit ? 'Editar Producto' : 'Nuevo Producto' }}</h1>
+      <p>{{ isEdit ? 'Modifica los datos del producto' : 'Completa el formulario para registrar un nuevo producto' }}</p>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <div class="form-card">
+
+      @if (loading) {
+        <div class="loading-state">
+          <i class="pi pi-spin pi-spinner"></i>
+          <span>Cargando producto...</span>
+        </div>
+      } @else {
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+          <!-- Sección: Información -->
+          <div class="form-section">
+            <div class="section-label">
+              <i class="pi pi-info-circle"></i>
+              Información del producto
+            </div>
+
+            <div class="field-group">
+              <label for="nombre">Nombre del producto</label>
+              <input
+                pInputText
+                id="nombre"
+                formControlName="nombre"
+                placeholder="Ej: Laptop Dell XPS 15"
+                [ngClass]="{'p-invalid': form.get('nombre')?.invalid && form.get('nombre')?.touched}"
+              />
+              @if (form.get('nombre')?.invalid && form.get('nombre')?.touched) {
+                <small class="field-error">
+                  <i class="pi pi-exclamation-circle"></i>
+                  {{ form.get('nombre')?.errors?.['required'] ? 'El nombre es requerido' : 'Mínimo 2 caracteres' }}
+                </small>
+              }
+            </div>
+          </div>
+
+          <!-- Sección: Precio e inventario -->
+          <div class="form-section">
+            <div class="section-label">
+              <i class="pi pi-dollar"></i>
+              Precio e inventario
+            </div>
+
+            <div class="fields-row">
+              <div class="field-group">
+                <label for="precio">Precio unitario</label>
+                <p-inputNumber
+                  id="precio"
+                  formControlName="precio"
+                  mode="currency"
+                  currency="USD"
+                  locale="en-US"
+                  placeholder="0.00"
+                  styleClass="w-full"
+                  inputStyleClass="w-full"
+                  [ngClass]="{'p-invalid': form.get('precio')?.invalid && form.get('precio')?.touched}"
+                />
+                @if (form.get('precio')?.invalid && form.get('precio')?.touched) {
+                  <small class="field-error">
+                    <i class="pi pi-exclamation-circle"></i>
+                    El precio debe ser mayor a 0
+                  </small>
+                }
+              </div>
+
+              <div class="field-group">
+                <label for="stock">Stock disponible</label>
+                <p-inputNumber
+                  id="stock"
+                  formControlName="stock"
+                  placeholder="0"
+                  [min]="0"
+                  styleClass="w-full"
+                  inputStyleClass="w-full"
+                  [ngClass]="{'p-invalid': form.get('stock')?.invalid && form.get('stock')?.touched}"
+                />
+                @if (form.get('stock')?.invalid && form.get('stock')?.touched) {
+                  <small class="field-error">
+                    <i class="pi pi-exclamation-circle"></i>
+                    El stock no puede ser negativo
+                  </small>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Acciones -->
+          <div class="form-actions">
+            <p-button
+              label="Cancelar"
+              icon="pi pi-times"
+              severity="secondary"
+              [outlined]="true"
+              type="button"
+              (onClick)="goBack()"
+            />
+            <p-button
+              [label]="isEdit ? 'Guardar cambios' : 'Crear producto'"
+              [icon]="isEdit ? 'pi pi-check' : 'pi pi-plus'"
+              type="submit"
+              [loading]="submitting"
+              [disabled]="form.invalid"
+              styleClass="submit-btn"
+            />
+          </div>
+
+        </form>
+      }
+
+    </div>
+  </div>
+</div>

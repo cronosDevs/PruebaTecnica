@@ -1,0 +1,126 @@
+<div class="login-page">
+
+  <!-- Panel izquierdo -->
+  <div class="login-left">
+
+    <div class="login-logo">
+      <div class="logo-mark">
+        <i class="pi pi-box"></i>
+      </div>
+      <span>ProductHub</span>
+    </div>
+
+    <div class="brand">
+      <div class="brand-eyebrow">
+        <span>Plataforma de inventario</span>
+      </div>
+      <h1>Gestiona con<br><em>precisión</em><br>y control</h1>
+      <p>Una experiencia diseñada para equipos que exigen eficiencia, seguridad y visibilidad total sobre su operación.</p>
+    </div>
+
+    <div class="features">
+      <div class="feature-item">
+        <span class="feature-num">01</span>
+        <span>Control total de inventario en tiempo real</span>
+        <i class="pi pi-arrow-right"></i>
+      </div>
+      <div class="feature-item">
+        <span class="feature-num">02</span>
+        <span>Operaciones CRUD rápidas y confiables</span>
+        <i class="pi pi-arrow-right"></i>
+      </div>
+      <div class="feature-item">
+        <span class="feature-num">03</span>
+        <span>Autenticación JWT con seguridad robusta</span>
+        <i class="pi pi-arrow-right"></i>
+      </div>
+    </div>
+
+    <div class="deco-number">P</div>
+  </div>
+
+  <!-- Panel derecho -->
+  <div class="login-right">
+    <div class="login-card">
+
+      <div class="login-header">
+        <div class="header-tag">Acceso seguro</div>
+        <h2>Bienvenido</h2>
+        <p>Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+
+        <!-- Usuario -->
+        <div class="field-group">
+          <label for="username">
+            <i class="pi pi-user"></i>
+            Usuario
+          </label>
+          <input
+            pInputText
+            id="username"
+            formControlName="username"
+            placeholder="Ingresa tu usuario"
+            autocomplete="username"
+            [ngClass]="{'p-invalid': form.get('username')?.invalid && form.get('username')?.touched}"
+          />
+          @if (form.get('username')?.invalid && form.get('username')?.touched) {
+            <small class="field-error">
+              <i class="pi pi-exclamation-circle"></i>
+              El usuario es requerido
+            </small>
+          }
+        </div>
+
+        <!-- Contraseña -->
+        <div class="field-group">
+          <label for="password">
+            <i class="pi pi-lock"></i>
+            Contraseña
+          </label>
+          <p-password
+            id="password"
+            formControlName="password"
+            placeholder="Ingresa tu contraseña"
+            [feedback]="false"
+            [toggleMask]="true"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+            [ngClass]="{'p-invalid': form.get('password')?.invalid && form.get('password')?.touched}"
+          />
+          @if (form.get('password')?.invalid && form.get('password')?.touched) {
+            <small class="field-error">
+              <i class="pi pi-exclamation-circle"></i>
+              La contraseña es requerida
+            </small>
+          }
+        </div>
+
+        <!-- Error banner -->
+        @if (errorMessage) {
+          <div class="error-banner">
+            <i class="pi pi-times-circle"></i>
+            <span>{{ errorMessage }}</span>
+          </div>
+        }
+
+        <!-- Submit -->
+        <p-button
+          type="submit"
+          label="Iniciar Sesión"
+          icon="pi pi-sign-in"
+          styleClass="login-btn"
+          [loading]="loading"
+          [disabled]="form.invalid"
+        />
+
+        <div class="form-footer">
+          Acceso restringido <span>·</span> Solo usuarios autorizados
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

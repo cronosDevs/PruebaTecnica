@@ -1,0 +1,313 @@
+<div class="list-page">
+  <p-toast />
+  <p-confirmDialog />
+
+  <div class="page-header">
+    <div class="header-left">
+      <div class="header-icon">
+        <i class="pi pi-box"></i>
+      </div>
+      <div class="header-text">
+        <h1>Productos</h1>
+        <p>{{ products.length }} producto{{ products.length !== 1 ? 's' : '' }} registrado{{ products.length !== 1 ? 's' : '' }}</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      @if (cart.length > 0) {
+        <p-button
+          [label]="'Venta actual (' + cart.length + ')'"
+          icon="pi pi-shopping-cart"
+          styleClass="new-btn"
+          (onClick)="sellVisible = true"
+        />
+      }
+      @if (isAdmin) {
+        <p-button
+          label="Nuevo Producto"
+          icon="pi pi-plus"
+          styleClass="new-btn"
+          (onClick)="goToCreate()"
+        />
+      }
+    </div>
+  </div>
+
+  <div class="table-card">
+    <p-table
+      [value]="products"
+      [loading]="loading"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      styleClass="p-datatable-sm"
+      [tableStyle]="{ 'min-width': '48rem' }"
+      [rowHover]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id" style="width: 80px">
+            ID <p-sortIcon field="id" />
+          </th>
+          <th pSortableColumn="nombre">
+            Nombre <p-sortIcon field="nombre" />
+          </th>
+          <th pSortableColumn="precio" style="width: 160px">
+            Precio <p-sortIcon field="precio" />
+          </th>
+          <th pSortableColumn="stock" style="width: 120px">
+            Stock <p-sortIcon field="stock" />
+          </th>
+          <th style="width: 170px; text-align: center">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>
+            <span class="id-badge">#{{ product.id }}</span>
+          </td>
+          <td>
+            <div class="product-name">
+              <i class="pi pi-tag"></i>
+              {{ product.nombre }}
+            </div>
+          </td>
+          <td>
+            <span class="price-value">{{ product.precio | currency:'USD' }}</span>
+          </td>
+          <td>
+            <p-tag
+              [value]="product.stock + ' uds'"
+              [severity]="getStockSeverity(product.stock)"
+            />
+          </td>
+          <td>
+            <div class="action-buttons">
+              <p-button
+                icon="pi pi-shopping-cart"
+                [rounded]="true"
+                [text]="true"
+                severity="info"
+                pTooltip="Agregar a la venta"
+                [disabled]="availableToAdd(product) <= 0"
+                (onClick)="openAdd(product)"
+              />
+              @if (isAdmin) {
+                <p-button
+                  icon="pi pi-history"
+                  [rounded]="true"
+                  [text]="true"
+                  severity="info"
+                  pTooltip="Kardex"
+                  (onClick)="openKardex(product)"
+                />
+                <p-button
+                  icon="pi pi-pencil"
+                  [rounded]="true"
+                  [text]="true"
+                  severity="info"
+                  pTooltip="Editar"
+                  (onClick)="goToEdit(product.id)"
+                />
+                <p-button
+                  icon="pi pi-trash"
+                  [rounded]="true"
+                  [text]="true"
+                  severity="danger"
+                  pTooltip="Eliminar"
+                  (onClick)="confirmDelete(product)"
+                />
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">
+            <div class="empty-state">
+              <i class="pi pi-inbox"></i>
+              <span>No hay productos registrados</span>
+              @if (isAdmin) {
+                <p-button
+                  label="Crear primer producto"
+                  icon="pi pi-plus"
+                  [text]="true"
+                  (onClick)="goToCreate()"
+                />
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <p-dialog
+    header="Agregar a la venta"
+    [(visible)]="addVisible"
+    [modal]="true"
+    [style]="{ width: '400px' }"
+    styleClass="sell-dialog"
+  >
+    @if (addProduct) {
+      <div class="sell-content">
+        <div class="sell-row">
+          <span>Producto</span>
+          <strong>{{ addProduct.nombre }}</strong>
+        </div>
+        <div class="sell-row">
+          <span>Precio unitario</span>
+          <strong>{{ addProduct.precio | currency:'USD' }}</strong>
+        </div>
+        <div class="sell-row">
+          <span>Disponible</span>
+          <strong>{{ availableToAdd(addProduct) }} uds</strong>
+        </div>
+
+        <label for="cantidadAgregar">Cantidad</label>
+        <input
+          id="cantidadAgregar"
+          type="number"
+          min="1"
+          [max]="availableToAdd(addProduct)"
+          [(ngModel)]="addQuantity"
+          [class.invalid]="!isValidAdd()"
+          (keyup.enter)="confirmAdd()"
+        />
+
+        <div class="sell-row total">
+          <span>Subtotal</span>
+          <strong>{{ addProduct.precio * addQuantity | currency:'USD' }}</strong>
+        </div>
+      </div>
+    }
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Cancelar"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="addVisible = false"
+      />
+      <p-button
+        label="Agregar"
+        icon="pi pi-plus"
+        styleClass="new-btn"
+        [disabled]="!isValidAdd()"
+        (onClick)="confirmAdd()"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog
+    header="Venta actual"
+    [(visible)]="sellVisible"
+    [modal]="true"
+    [style]="{ width: '560px' }"
+    styleClass="sell-dialog"
+  >
+    <div class="sell-content">
+      @for (item of cart; track item.product.id) {
+        <div class="cart-item">
+          <div class="cart-product">
+            <strong>{{ item.product.nombre }}</strong>
+            <span>{{ item.product.precio | currency:'USD' }} · stock {{ item.product.stock }}</span>
+          </div>
+          <input
+            type="number"
+            min="1"
+            [max]="item.product.stock"
+            [(ngModel)]="item.cantidad"
+            [class.invalid]="item.cantidad < 1 || item.cantidad > item.product.stock"
+          />
+          <strong class="cart-subtotal">{{ item.product.precio * item.cantidad | currency:'USD' }}</strong>
+          <p-button
+            icon="pi pi-times"
+            [text]="true"
+            severity="secondary"
+            pTooltip="Quitar"
+            (onClick)="removeFromCart(item.product.id!)"
+          />
+        </div>
+      }
+
+      <div class="sell-row total">
+        <span>Total</span>
+        <strong>{{ cartTotal() | currency:'USD' }}</strong>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Seguir agregando"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="sellVisible = false"
+      />
+      <p-button
+        label="Confirmar venta"
+        icon="pi pi-check"
+        styleClass="new-btn"
+        [loading]="selling"
+        [disabled]="!isValidCart()"
+        (onClick)="confirmSell()"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog
+    [header]="'Kardex · ' + (kardexProduct?.nombre ?? '')"
+    [(visible)]="kardexVisible"
+    [modal]="true"
+    [style]="{ width: '820px' }"
+    styleClass="sell-dialog"
+  >
+    <div class="kardex-content">
+      <p-table
+        [value]="movements"
+        [loading]="loadingKardex"
+        [paginator]="movements.length > 8"
+        [rows]="8"
+        styleClass="p-datatable-sm"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 150px">Fecha</th>
+            <th>Tipo</th>
+            <th style="text-align: right">Cantidad</th>
+            <th style="text-align: right">Stock</th>
+            <th>Usuario</th>
+            <th>Venta</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-mov>
+          <tr>
+            <td>{{ mov.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td><span class="id-badge">{{ mov.tipo }}</span></td>
+            <td style="text-align: right">
+              <span [class]="mov.cantidad > 0 ? 'mov-in' : 'mov-out'">
+                {{ mov.cantidad > 0 ? '+' : '' }}{{ mov.cantidad }}
+              </span>
+            </td>
+            <td style="text-align: right">{{ mov.stockResultante }}</td>
+            <td>{{ mov.usuario }}</td>
+            <td><span class="id-badge">{{ mov.ventaCodigo ?? '—' }}</span></td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6">
+              <div class="empty-state">
+                <span>El producto no tiene movimientos registrados</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-dialog>
+</div>

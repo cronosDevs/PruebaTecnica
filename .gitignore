@@ -1,0 +1,12 @@
+.env
+**/.env
+!**/.env.example
+
+.idea/
+*.iml
+.codegraph/
+
+node_modules/
+dist/
+.angular/
+target/

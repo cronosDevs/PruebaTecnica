@@ -1,0 +1,577 @@
+
+// ─── Variables ────────────────────────────────────────────────────────────────
+$ink:        #1a1e24;
+$ink-soft:   #22272f;
+$ink-mid:    #2a3040;
+$gold:       #c9a96e;
+$gold-light: #e4c99a;
+$gold-dim:   rgba(201, 169, 110, 0.13);
+$cream:      #f5f0e8;
+$muted:      #6b7585;
+$muted-lite: #9aa0b0;
+$error:      #e05252;
+$success:    #4caf82;
+$warn:       #d4943a;
+$white:      #ffffff;
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+.list-page {
+  min-height: 100vh;
+  background: $ink;
+  padding: 2.5rem 3rem;
+  font-family: 'DM Sans', sans-serif;
+  background-image:
+    linear-gradient(rgba(201, 169, 110, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 169, 110, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid $gold-dim;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    .header-icon {
+      width: 48px;
+      height: 48px;
+      border: 1.5px solid $gold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      i { font-size: 1.2rem; color: $gold; }
+    }
+
+    .header-text { display: flex; flex-direction: column; gap: 0.2rem; }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: $cream;
+      margin: 0;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    p {
+      font-size: 0.72rem;
+      font-weight: 300;
+      color: $muted-lite;
+      margin: 0;
+      letter-spacing: 0.08em;
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+// ─── Botón nuevo producto ─────────────────────────────────────────────────────
+::ng-deep .new-btn {
+  background: $gold !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 0.65rem 1.25rem !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.68rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: $ink !important;
+  transition: background 0.2s, transform 0.15s !important;
+
+  .p-button-label { color: $ink !important; }
+  .p-button-icon  { color: $ink !important; font-size: 0.75rem !important; }
+
+  &:hover {
+    background: $gold-light !important;
+    transform: translateY(-1px) !important;
+  }
+}
+
+::ng-deep .p-button.p-button-secondary.p-button-text {
+  color: $muted !important;
+  border-radius: 4px !important;
+  transition: color 0.2s, background 0.2s !important;
+
+  &:hover {
+    background: rgba(201, 169, 110, 0.07) !important;
+    color: $gold !important;
+  }
+}
+
+// ─── Table card ───────────────────────────────────────────────────────────────
+.table-card {
+  background: $ink-soft;
+  border: 1px solid $gold-dim;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $gold, transparent);
+    z-index: 1;
+  }
+}
+
+// ─── PrimeNG DataTable ────────────────────────────────────────────────────────
+::ng-deep .p-datatable {
+  background: transparent !important;
+  font-family: 'DM Sans', sans-serif !important;
+
+  .p-datatable-thead > tr > th {
+    background: $ink-mid !important;
+    color: $muted-lite !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.62rem !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.18em !important;
+    border: none !important;
+    border-bottom: 1px solid $gold-dim !important;
+    padding: 1rem 1.25rem !important;
+
+    .p-sortable-column-icon { color: $muted !important; font-size: 0.7rem !important; }
+
+    &:hover, &.p-highlight {
+      background: $ink-mid !important;
+      color: $gold !important;
+      .p-sortable-column-icon { color: $gold !important; }
+    }
+  }
+
+  .p-datatable-tbody > tr {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.05) !important;
+    transition: background 0.18s !important;
+
+    &:hover { background: rgba(201, 169, 110, 0.04) !important; }
+    &:last-child { border-bottom: none !important; }
+
+    td {
+      border: none !important;
+      padding: 1rem 1.25rem !important;
+      color: $cream !important;
+      font-size: 0.875rem !important;
+      font-weight: 300 !important;
+    }
+  }
+
+  // Paginador
+  .p-paginator {
+    background: $ink-mid !important;
+    border-top: 1px solid $gold-dim !important;
+    border-radius: 0 !important;
+    padding: 0.75rem 1rem !important;
+
+    .p-paginator-page,
+    .p-paginator-first,
+    .p-paginator-prev,
+    .p-paginator-next,
+    .p-paginator-last {
+      color: $muted !important;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 4px !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 0.8rem !important;
+      min-width: 2rem !important;
+      height: 2rem !important;
+      transition: color 0.2s, background 0.2s !important;
+
+      &:hover {
+        background: rgba(201, 169, 110, 0.08) !important;
+        color: $gold !important;
+      }
+    }
+
+    .p-paginator-page.p-highlight {
+      background: $gold !important;
+      color: $ink !important;
+    }
+
+    .p-paginator-current {
+      color: $muted !important;
+      font-size: 0.75rem !important;
+      font-family: 'DM Sans', sans-serif !important;
+    }
+
+    .p-dropdown {
+      background: $ink-soft !important;
+      border: 1px solid $gold-dim !important;
+      border-radius: 4px !important;
+      color: $muted-lite !important;
+      font-size: 0.78rem !important;
+
+      .p-dropdown-label { color: $muted-lite !important; }
+      .p-dropdown-trigger { color: $muted !important; }
+      &:hover { border-color: $gold !important; }
+    }
+  }
+
+  .p-datatable-loading-overlay { background: rgba(26, 30, 36, 0.6) !important; }
+  .p-datatable-loading-icon    { color: $gold !important; }
+}
+
+// ─── Celdas ───────────────────────────────────────────────────────────────────
+.id-badge {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: $muted;
+  letter-spacing: 0.06em;
+}
+
+.product-name {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: $cream;
+  font-weight: 400;
+
+  i { font-size: 0.75rem; color: $gold; opacity: 0.45; }
+}
+
+.price-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: $gold-light;
+  letter-spacing: 0.02em;
+}
+
+// ─── Tags stock ───────────────────────────────────────────────────────────────
+::ng-deep .p-tag {
+  border-radius: 4px !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.65rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.1em !important;
+  padding: 0.25rem 0.6rem !important;
+
+  &.p-tag-success {
+    background: rgba(76, 175, 130, 0.12) !important;
+    color: $success !important;
+    border: 1px solid rgba(76, 175, 130, 0.25) !important;
+  }
+
+  &.p-tag-warning, &.p-tag-warn {
+    background: rgba(212, 148, 58, 0.12) !important;
+    color: $warn !important;
+    border: 1px solid rgba(212, 148, 58, 0.25) !important;
+  }
+
+  &.p-tag-danger {
+    background: rgba(224, 82, 82, 0.1) !important;
+    color: $error !important;
+    border: 1px solid rgba(224, 82, 82, 0.2) !important;
+  }
+}
+
+// ─── Action buttons ───────────────────────────────────────────────────────────
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+::ng-deep .action-buttons {
+  .p-button.p-button-info.p-button-text {
+    color: $muted !important;
+    border-radius: 4px !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    transition: color 0.2s, background 0.2s !important;
+
+    &:hover {
+      background: rgba(201, 169, 110, 0.08) !important;
+      color: $gold !important;
+    }
+  }
+
+  .p-button.p-button-danger.p-button-text {
+    color: $muted !important;
+    border-radius: 4px !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    transition: color 0.2s, background 0.2s !important;
+
+    &:hover {
+      background: rgba(224, 82, 82, 0.08) !important;
+      color: $error !important;
+    }
+  }
+}
+
+// ─── Empty state ──────────────────────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  color: $muted;
+
+  i { font-size: 2.5rem; color: rgba(201, 169, 110, 0.18); }
+
+  span {
+    font-size: 0.875rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  ::ng-deep .p-button {
+    color: $gold !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.08em !important;
+    border-radius: 4px !important;
+    &:hover { background: rgba(201, 169, 110, 0.08) !important; }
+  }
+}
+
+// ─── Confirm Dialog ───────────────────────────────────────────────────────────
+::ng-deep .p-confirmdialog {
+  .p-dialog-header {
+    background: $ink-soft !important;
+    border-bottom: 1px solid $gold-dim !important;
+    padding: 1.25rem 1.5rem !important;
+
+    .p-dialog-title {
+      font-family: 'Playfair Display', serif !important;
+      font-size: 1.2rem !important;
+      color: $cream !important;
+    }
+
+    .p-dialog-header-close {
+      color: $muted !important;
+      border-radius: 4px !important;
+      &:hover { color: $gold !important; background: transparent !important; }
+    }
+  }
+
+  .p-dialog-content {
+    background: $ink-soft !important;
+    color: $muted-lite !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.9rem !important;
+    font-weight: 300 !important;
+    padding: 1.5rem !important;
+
+    .p-confirm-dialog-icon { color: $warn !important; }
+  }
+
+  .p-dialog-footer {
+    background: $ink-soft !important;
+    border-top: 1px solid $gold-dim !important;
+    padding: 1rem 1.5rem !important;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+
+    .p-button {
+      border-radius: 4px !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 0.7rem !important;
+      letter-spacing: 0.14em !important;
+      text-transform: uppercase !important;
+      font-weight: 500 !important;
+    }
+
+    .p-button-danger {
+      background: $error !important;
+      border-color: $error !important;
+      color: $white !important;
+    }
+
+    .p-button:not(.p-button-danger) {
+      background: transparent !important;
+      border: 1px solid $gold-dim !important;
+      color: $muted-lite !important;
+
+      &:hover {
+        border-color: $gold !important;
+        color: $gold !important;
+        background: transparent !important;
+      }
+    }
+  }
+}
+
+// ─── Toast ────────────────────────────────────────────────────────────────────
+::ng-deep .p-toast {
+  .p-toast-message {
+    background: $ink-mid !important;
+    border: 1px solid $gold-dim !important;
+    border-left: 3px solid $gold !important;
+    border-radius: 4px !important;
+    font-family: 'DM Sans', sans-serif !important;
+
+    .p-toast-summary {
+      font-weight: 500 !important;
+      color: $cream !important;
+      font-size: 0.85rem !important;
+    }
+
+    .p-toast-detail {
+      font-weight: 300 !important;
+      color: $muted-lite !important;
+      font-size: 0.8rem !important;
+    }
+
+    &.p-toast-message-success {
+      border-left-color: $success !important;
+      .p-toast-message-icon { color: $success !important; }
+    }
+
+    &.p-toast-message-error {
+      border-left-color: $error !important;
+      .p-toast-message-icon { color: $error !important; }
+    }
+
+    .p-toast-icon-close {
+      color: $muted !important;
+      &:hover { color: $gold !important; }
+    }
+  }
+}
+
+// ─── Responsive ───────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .list-page { padding: 1.5rem 1rem; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+}
+
+::ng-deep .sell-dialog {
+  border: 1px solid $gold-dim !important;
+
+  .p-dialog-footer .p-button-outlined {
+    background: transparent !important;
+    border: 1px solid $gold-dim !important;
+    color: $muted-lite !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+
+    &:hover {
+      border-color: $gold !important;
+      color: $gold !important;
+    }
+  }
+
+  .p-dialog-header,
+  .p-dialog-content,
+  .p-dialog-footer {
+    background: $ink-soft !important;
+    color: $cream !important;
+    font-family: 'DM Sans', sans-serif !important;
+  }
+
+  .p-dialog-header {
+    border-bottom: 1px solid $gold-dim !important;
+
+    .p-dialog-title {
+      font-family: 'Playfair Display', serif !important;
+      font-size: 1.2rem !important;
+    }
+  }
+
+  .p-dialog-footer {
+    border-top: 1px solid $gold-dim !important;
+    padding-top: 1rem !important;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+}
+
+.sell-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+
+  .sell-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: $muted-lite;
+
+    strong { color: $cream; font-weight: 500; }
+
+    &.total {
+      padding-top: 0.75rem;
+      border-top: 1px solid $gold-dim;
+
+      strong { color: $gold-light; font-size: 1.1rem; }
+    }
+  }
+
+  label {
+    margin-top: 0.5rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $muted-lite;
+  }
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 1fr 80px 110px auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.06);
+  }
+
+  .cart-product {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.85rem;
+
+    strong { color: $cream; font-weight: 500; }
+    span { font-size: 0.72rem; color: $muted; }
+  }
+
+  .cart-subtotal {
+    text-align: right;
+    color: $gold-light;
+    font-weight: 400;
+  }
+
+  input {
+    padding: 0.7rem 0.9rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(201, 169, 110, 0.18);
+    border-radius: 4px;
+    color: $cream;
+    font-size: 0.92rem;
+    outline: none;
+
+    &:focus { border-color: $gold; }
+    &.invalid { border-color: $error; }
+  }
+}
+
+.kardex-content {
+  padding-top: 1rem;
+
+  .mov-in  { color: $success; font-weight: 500; }
+  .mov-out { color: $error; font-weight: 500; }
+}

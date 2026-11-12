@@ -1,0 +1,353 @@
+
+// ─── Variables (mismas que login y product-list) ───────────────────────────────
+$ink:        #1a1e24;
+$ink-soft:   #22272f;
+$ink-mid:    #2a3040;
+$gold:       #c9a96e;
+$gold-light: #e4c99a;
+$gold-dim:   rgba(201, 169, 110, 0.13);
+$cream:      #f5f0e8;
+$muted:      #6b7585;
+$muted-lite: #9aa0b0;
+$error:      #e05252;
+$white:      #ffffff;
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+.form-page {
+  min-height: 100vh;
+  background: $ink;
+  padding: 3rem 2rem;
+  font-family: 'DM Sans', sans-serif;
+  background-image:
+    linear-gradient(rgba(201, 169, 110, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 169, 110, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 680px;
+  margin: 0 auto 2rem auto;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid $gold-dim;
+}
+
+.header-text {
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: $cream;
+    margin: 0 0 0.25rem 0;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  p {
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: $muted-lite;
+    margin: 0;
+    letter-spacing: 0.03em;
+  }
+}
+
+// Botón volver
+::ng-deep .back-btn {
+  color: $muted !important;
+  border-radius: 4px !important;
+  flex-shrink: 0 !important;
+  transition: color 0.2s, background 0.2s !important;
+
+  &:hover {
+    background: rgba(201, 169, 110, 0.07) !important;
+    color: $gold !important;
+  }
+}
+
+// ─── Container ────────────────────────────────────────────────────────────────
+.form-container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+// ─── Card ─────────────────────────────────────────────────────────────────────
+.form-card {
+  background: $ink-soft;
+  border: 1px solid $gold-dim;
+  border-radius: 6px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+
+  // Línea dorada superior
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $gold, transparent);
+  }
+}
+
+// ─── Loading ──────────────────────────────────────────────────────────────────
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: $muted;
+
+  i {
+    font-size: 2rem;
+    color: $gold;
+    opacity: 0.5;
+  }
+
+  span {
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+  }
+}
+
+// ─── Secciones ────────────────────────────────────────────────────────────────
+.form-section {
+  margin-bottom: 2rem;
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: $gold;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid $gold-dim;
+
+    i { font-size: 0.7rem; }
+  }
+}
+
+// ─── Fields ───────────────────────────────────────────────────────────────────
+.fields-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+
+  label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $muted-lite;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(201, 169, 110, 0.18);
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: $cream;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+
+    &::placeholder { color: $muted; }
+
+    &:focus {
+      border-color: $gold;
+      background: rgba(201, 169, 110, 0.05);
+    }
+
+    &.p-invalid { border-color: $error; }
+  }
+}
+
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: $error;
+  font-size: 0.75rem;
+  font-weight: 300;
+
+  i { font-size: 0.7rem; }
+}
+
+// ─── PrimeNG InputNumber override ─────────────────────────────────────────────
+::ng-deep .form-card {
+  .p-inputnumber {
+    width: 100%;
+  }
+
+  .p-inputnumber-input {
+    width: 100% !important;
+    padding: 0.85rem 1rem !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(201, 169, 110, 0.18) !important;
+    border-radius: 4px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.92rem !important;
+    font-weight: 300 !important;
+    color: $cream !important;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: border-color 0.25s, background 0.25s !important;
+
+    &::placeholder { color: $muted !important; }
+
+    &:focus {
+      border-color: $gold !important;
+      background: rgba(201, 169, 110, 0.05) !important;
+      box-shadow: none !important;
+    }
+  }
+
+  .p-invalid .p-inputnumber-input {
+    border-color: $error !important;
+  }
+
+  // Botones +/- del inputnumber
+  .p-inputnumber-button {
+    background: $ink-mid !important;
+    border: 1px solid rgba(201, 169, 110, 0.18) !important;
+    color: $muted !important;
+    transition: color 0.2s, background 0.2s !important;
+
+    &:hover {
+      background: rgba(201, 169, 110, 0.1) !important;
+      color: $gold !important;
+    }
+  }
+}
+
+// ─── Actions ──────────────────────────────────────────────────────────────────
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $gold-dim;
+}
+
+// Botón cancelar
+::ng-deep .form-actions {
+  .p-button-secondary {
+    background: transparent !important;
+    border: 1px solid $gold-dim !important;
+    border-radius: 4px !important;
+    color: $muted-lite !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.72rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    transition: border-color 0.2s, color 0.2s !important;
+
+    .p-button-label { color: $muted-lite !important; }
+    .p-button-icon  { color: $muted !important; font-size: 0.75rem !important; }
+
+    &:hover {
+      border-color: $gold !important;
+      color: $gold !important;
+      background: rgba(201, 169, 110, 0.05) !important;
+      .p-button-label { color: $gold !important; }
+      .p-button-icon  { color: $gold !important; }
+    }
+  }
+}
+
+// Botón submit
+::ng-deep .submit-btn {
+  background: $gold !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 0.7rem 1.5rem !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: $ink !important;
+  transition: background 0.2s, transform 0.15s !important;
+
+  .p-button-label { color: $ink !important; }
+  .p-button-icon  { color: $ink !important; font-size: 0.75rem !important; }
+
+  &:hover:not(:disabled) {
+    background: $gold-light !important;
+    transform: translateY(-1px) !important;
+  }
+
+  &:disabled {
+    background: rgba(201, 169, 110, 0.2) !important;
+    .p-button-label { color: $muted !important; }
+  }
+}
+
+// ─── Toast (consistente con el resto) ─────────────────────────────────────────
+::ng-deep .p-toast {
+  .p-toast-message {
+    background: $ink-mid !important;
+    border: 1px solid $gold-dim !important;
+    border-left: 3px solid $gold !important;
+    border-radius: 4px !important;
+    font-family: 'DM Sans', sans-serif !important;
+
+    .p-toast-summary {
+      font-weight: 500 !important;
+      color: $cream !important;
+      font-size: 0.85rem !important;
+    }
+
+    .p-toast-detail {
+      font-weight: 300 !important;
+      color: $muted-lite !important;
+      font-size: 0.8rem !important;
+    }
+
+    &.p-toast-message-success {
+      border-left-color: #4caf82 !important;
+      .p-toast-message-icon { color: #4caf82 !important; }
+    }
+
+    &.p-toast-message-error {
+      border-left-color: $error !important;
+      .p-toast-message-icon { color: $error !important; }
+    }
+
+    .p-toast-icon-close {
+      color: $muted !important;
+      &:hover { color: $gold !important; }
+    }
+  }
+}
+
+// ─── Responsive ───────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .form-page { padding: 1.5rem 1rem; }
+  .form-card  { padding: 1.5rem; }
+}
